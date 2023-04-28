@@ -5,10 +5,12 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Counter from "./components/counter";
+import Timer from "./components/Timer"
 
 ReactDOM.render(
   <React.StrictMode>
     <Counter />
+    <Timer />
   </React.StrictMode>,
   document.getElementById('root')
 );
