@@ -23,6 +23,23 @@ const QuizComponent = (props) => {
     const [currentPoints, setPoints] = useState(0);
     const [allowToChoose, changePermission] = useState(true);
     const [markedAnswer, markAnswer] = useState({key: -1, variant: ''});
+    const [checkedAnswers, setCheckedAnswers] = useState([]);
+
+// sprawdzenie, czy odpowiedź była już zaznaczona
+    const check = questionId => {
+        const answer = checkedAnswers.find(el => el.questionId === questionId);
+
+        if (answer) {
+            changePermission(false);
+
+            const {key,variant} = answer;
+
+            markAnswer({
+                key,
+                variant,
+            });
+        }
+    };
 
 
 // przejście do kolejnego pytania
@@ -37,6 +54,7 @@ const QuizComponent = (props) => {
         setQuestion(questions[nextValue]);
         changePermission(true);
         markAnswer({key: -1, variant: ''});
+        check(nextValue);
     };
 
 // przejście do poprzedniego pytania
@@ -51,6 +69,7 @@ const QuizComponent = (props) => {
         setQuestion(questions[prevValue]);
         changePermission(true);
         markAnswer({key: -1, variant: ''});
+        check(prevValue);
     };
 
 
@@ -66,9 +85,23 @@ const QuizComponent = (props) => {
             setPoints(points);
             changePermission(false);
             markAnswer({key, variant: 'bg-success'})
+            setCheckedAnswers(prevState => (
+                [...prevState, {
+                    questionId: currentIndex,
+                    key,
+                    variant: 'bg-success',
+                }]
+            ));
         } else {
             changePermission(false);
             markAnswer({key, variant: 'bg-danger'})
+            setCheckedAnswers(prevState => (
+                [...prevState, {
+                    questionId: currentIndex,
+                    key,
+                    variant: 'bg-danger',
+                }]
+            ));
         }
     };
 
